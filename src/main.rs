@@ -1,7 +1,6 @@
 mod day_1;
 
 use chrono::prelude::*;
-
 use clap::Clap;
 
 #[derive(Clap)]
@@ -17,6 +16,10 @@ fn main() {
         day
     } else {
         let today: DateTime<Local> = Local::now();
+        if today.month() != 12 {
+            eprintln!("It's not december!\nYou probably want to specify a day with the `-d` arg");
+            return;
+        }
         today.day()
     };
     match day {
