@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Day2Error",""]],"fn":[["input",""],["run",""],["task_1",""]],"struct":[["PasswordAndPolicy",""]]});
