@@ -119,6 +119,46 @@
 <span id="116">116</span>
 <span id="117">117</span>
 <span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">anyhow</span>::<span class="prelude-ty">Result</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">include_str</span>;
@@ -135,8 +175,8 @@
 }
 
 <span class="kw">struct</span> <span class="ident">PasswordAndPolicy</span> {
-    <span class="ident">min</span>: <span class="ident">u32</span>,
-    <span class="ident">max</span>: <span class="ident">u32</span>,
+    <span class="ident">first_number</span>: <span class="ident">u32</span>,
+    <span class="ident">second_number</span>: <span class="ident">u32</span>,
     <span class="ident">letter</span>: <span class="ident">char</span>,
     <span class="ident">password</span>: <span class="ident">String</span>,
 }
@@ -166,20 +206,38 @@
             .<span class="ident">ok_or</span>(<span class="ident">Day2Error</span>::<span class="ident">FailedToParsePolicy</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">password</span> <span class="op">=</span> <span class="ident">segments</span>.<span class="ident">get</span>(<span class="number">2</span>).<span class="ident">ok_or</span>(<span class="ident">Day2Error</span>::<span class="ident">FailedToParsePolicy</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">PasswordAndPolicy</span> {
-            <span class="ident">min</span>,
-            <span class="ident">max</span>,
+            <span class="ident">first_number</span>: <span class="ident">min</span>,
+            <span class="ident">second_number</span>: <span class="ident">max</span>,
             <span class="ident">letter</span>,
             <span class="ident">password</span>: (<span class="kw-2">*</span><span class="ident">password</span>).<span class="ident">to_owned</span>(),
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_valid_first_policy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">password</span>
             .<span class="ident">chars</span>()
             .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">letter</span><span class="op">|</span> <span class="ident">letter</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">letter</span>)
             .<span class="ident">count</span>() <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="ident">count</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">min</span> <span class="op">&amp;&amp;</span> <span class="ident">count</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">max</span>
+        <span class="ident">count</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">first_number</span> <span class="op">&amp;&amp;</span> <span class="ident">count</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">second_number</span>
+    }
+
+    <span class="kw">fn</span> <span class="ident">is_valid_second_policy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">let</span> <span class="ident">first_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">first_number</span> <span class="op">-</span> <span class="number">1</span>;
+        <span class="kw">let</span> <span class="ident">second_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">second_number</span> <span class="op">-</span> <span class="number">1</span>;
+        <span class="kw">let</span> <span class="ident">first_correct</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">password</span>
+            .<span class="ident">chars</span>()
+            .<span class="ident">nth</span>(<span class="ident">first_index</span> <span class="kw">as</span> <span class="ident">usize</span>)
+            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">letter</span><span class="op">|</span> <span class="ident">letter</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">letter</span>)
+            .<span class="ident">is_some</span>();
+        <span class="kw">let</span> <span class="ident">second_correct</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">password</span>
+            .<span class="ident">chars</span>()
+            .<span class="ident">nth</span>(<span class="ident">second_index</span> <span class="kw">as</span> <span class="ident">usize</span>)
+            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">letter</span><span class="op">|</span> <span class="ident">letter</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">letter</span>)
+            .<span class="ident">is_some</span>();
+        <span class="ident">first_correct</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">second_correct</span> <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">first_correct</span> <span class="op">&amp;&amp;</span> <span class="ident">second_correct</span>
     }
 }
 
@@ -188,34 +246,22 @@
         .<span class="ident">lines</span>()
         .<span class="ident">map</span>(<span class="op">|</span><span class="ident">line</span><span class="op">|</span> <span class="ident">PasswordAndPolicy</span>::<span class="ident">parse</span>(<span class="ident">line</span>))
         .<span class="ident">filter_map</span>(<span class="prelude-ty">Result</span>::<span class="ident">ok</span>)
-        .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">password_policy</span><span class="op">|</span> <span class="ident">password_policy</span>.<span class="ident">is_valid</span>())
+        .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">password_policy</span><span class="op">|</span> <span class="ident">password_policy</span>.<span class="ident">is_valid_first_policy</span>())
         .<span class="ident">count</span>()
 }
 
-<span class="comment">// fn task_2(input: &amp;str) -&gt; Result&lt;i32&gt; {</span>
-<span class="comment">//     let numbers: Vec&lt;_&gt; = input</span>
-<span class="comment">//         .lines()</span>
-<span class="comment">//         .map(|line| line.parse::&lt;i32&gt;())</span>
-<span class="comment">//         .filter_map(Result::ok)</span>
-<span class="comment">//         .collect();</span>
-
-<span class="comment">//     for (i, first_number) in numbers.iter().enumerate() {</span>
-<span class="comment">//         for (o, second_number) in numbers[i..].iter().enumerate() {</span>
-<span class="comment">//             let position = i + o;</span>
-<span class="comment">//             for third_number in &amp;numbers[position..] {</span>
-<span class="comment">//                 let sum = first_number + second_number + third_number;</span>
-<span class="comment">//                 if sum == 2020 {</span>
-<span class="comment">//                     return Ok(first_number * second_number * third_number);</span>
-<span class="comment">//                 }</span>
-<span class="comment">//             }</span>
-<span class="comment">//         }</span>
-<span class="comment">//     }</span>
-<span class="comment">//     Err(Day1Error::FailedToFindPair.into())</span>
-<span class="comment">// }</span>
+<span class="kw">fn</span> <span class="ident">task_2</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="ident">input</span>
+        .<span class="ident">lines</span>()
+        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">line</span><span class="op">|</span> <span class="ident">PasswordAndPolicy</span>::<span class="ident">parse</span>(<span class="ident">line</span>))
+        .<span class="ident">filter_map</span>(<span class="prelude-ty">Result</span>::<span class="ident">ok</span>)
+        .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">password_policy</span><span class="op">|</span> <span class="ident">password_policy</span>.<span class="ident">is_valid_second_policy</span>())
+        .<span class="ident">count</span>()
+}
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>() {
     <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Day 2 task 1 -&gt; {}&quot;</span>, <span class="ident">task_1</span>(<span class="ident">input</span>()));
-    <span class="comment">// println!(&quot;Day 1 task 2 -&gt; {}&quot;, task_2(input()).unwrap());</span>
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Day 2 task 2 -&gt; {}&quot;</span>, <span class="ident">task_2</span>(<span class="ident">input</span>()));
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -236,6 +282,40 @@
         <span class="kw">let</span> <span class="ident">example</span> <span class="op">=</span> <span class="ident">input</span>();
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">task_1</span>(<span class="ident">example</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">res</span>, <span class="number">458</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">example_2</span>() {
+        <span class="kw">let</span> <span class="ident">example</span> <span class="op">=</span> <span class="string">&quot;1-3 a: abcde
+1-3 b: cdefg
+2-9 c: ccccccccc&quot;</span>;
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">task_2</span>(<span class="ident">example</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">res</span>, <span class="number">1</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">validate_policy_2_correct</span>() {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">PasswordAndPolicy</span>::<span class="ident">parse</span>(<span class="string">&quot;1-3 a: abcde&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">res</span>.<span class="ident">is_valid_second_policy</span>());
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">validate_policy_2_none</span>() {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">PasswordAndPolicy</span>::<span class="ident">parse</span>(<span class="string">&quot;1-3 b: cdefg&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">res</span>.<span class="ident">is_valid_second_policy</span>());
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">validate_policy_2_both</span>() {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">PasswordAndPolicy</span>::<span class="ident">parse</span>(<span class="string">&quot;2-9 c: ccccccccc&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">res</span>.<span class="ident">is_valid_second_policy</span>());
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">task_2_test</span>() {
+        <span class="kw">let</span> <span class="ident">example</span> <span class="op">=</span> <span class="ident">input</span>();
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">task_2</span>(<span class="ident">example</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">res</span>, <span class="number">342</span>);
     }
 }
 </pre></div>
