@@ -1,5 +1,6 @@
 use anyhow::Result;
 use std::include_str;
+use std::str::FromStr;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -17,6 +18,14 @@ struct PasswordAndPolicy {
     second_number: u32,
     letter: char,
     password: String,
+}
+
+impl FromStr for PasswordAndPolicy {
+    type Err = anyhow::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        PasswordAndPolicy::parse(s)
+    }
 }
 
 impl PasswordAndPolicy {
@@ -82,7 +91,7 @@ impl PasswordAndPolicy {
 fn task_1(input: &str) -> usize {
     input
         .lines()
-        .map(|line| PasswordAndPolicy::parse(line))
+        .map(|line| line.parse::<PasswordAndPolicy>())
         .filter_map(Result::ok)
         .filter(|password_policy| password_policy.is_valid_first_policy())
         .count()
@@ -91,7 +100,7 @@ fn task_1(input: &str) -> usize {
 fn task_2(input: &str) -> usize {
     input
         .lines()
-        .map(|line| PasswordAndPolicy::parse(line))
+        .map(|line| line.parse::<PasswordAndPolicy>())
         .filter_map(Result::ok)
         .filter(|password_policy| password_policy.is_valid_second_policy())
         .count()
