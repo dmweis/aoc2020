@@ -1,5 +1,6 @@
 mod day_1;
 mod day_2;
+mod day_3;
 
 use chrono::prelude::*;
 use clap::Clap;
@@ -26,6 +27,7 @@ fn main() {
     match day {
         1 => day_1::run(),
         2 => day_2::run(),
+        3 => day_3::run(),
         _ => println!("No solution for that day yet!"),
     }
 }
