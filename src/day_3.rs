@@ -73,13 +73,23 @@ impl TreeMaze {
     }
 }
 
-fn task_1(input: &str) -> Result<usize> {
-    let maze = input.parse::<TreeMaze>()?;
+struct Slope {
+    right: usize,
+    down: usize,
+}
+
+impl Slope {
+    fn new(right: usize, down: usize) -> Self {
+        Slope { right, down }
+    }
+}
+
+fn check_slope(maze: &TreeMaze, slope: &Slope) -> Result<usize> {
     let height = maze.height;
     let mut tree_hit_count = 0;
     for i in 0.. {
-        let x = i * 3;
-        let y = i;
+        let x = i * slope.right;
+        let y = i * slope.down;
         if y > height {
             break;
         }
@@ -90,8 +100,32 @@ fn task_1(input: &str) -> Result<usize> {
     Ok(tree_hit_count)
 }
 
+fn task_1(input: &str) -> Result<usize> {
+    let maze = input.parse::<TreeMaze>()?;
+    let tree_hit_count = check_slope(&maze, &Slope::new(3, 1))?;
+    Ok(tree_hit_count)
+}
+
+fn task_2(input: &str) -> Result<usize> {
+    let slopes = vec![
+        Slope::new(1, 1),
+        Slope::new(3, 1),
+        Slope::new(5, 1),
+        Slope::new(7, 1),
+        Slope::new(1, 2),
+    ];
+    let maze = input.parse::<TreeMaze>()?;
+    let tree_hit_count = slopes
+        .into_iter()
+        .map(|slope| check_slope(&maze, &slope))
+        .flat_map(Result::ok)
+        .product();
+    Ok(tree_hit_count)
+}
+
 pub fn run() {
     println!("Day 3 task 1: {}", task_1(input()).unwrap());
+    println!("Day 3 task 2: {}", task_2(input()).unwrap());
 }
 
 #[cfg(test)]
@@ -161,5 +195,34 @@ mod tests {
 .#..#...#.#";
         let tree_hit_count = task_1(example).unwrap();
         assert_eq!(tree_hit_count, 7);
+    }
+
+    #[test]
+    fn task_1_test() {
+        let tree_hit_count = task_1(input()).unwrap();
+        assert_eq!(tree_hit_count, 299);
+    }
+
+    #[test]
+    fn example_1_task_2() {
+        let example = "..##.......
+#...#...#..
+.#....#..#.
+..#.#...#.#
+.#...##..#.
+..#.##.....
+.#.#.#....#
+.#........#
+#.##...#...
+#...##....#
+.#..#...#.#";
+        let tree_hit_count = task_2(example).unwrap();
+        assert_eq!(tree_hit_count, 336);
+    }
+
+    #[test]
+    fn task_2_test() {
+        let tree_hit_count = task_2(input()).unwrap();
+        assert_eq!(tree_hit_count, 3621285278);
     }
 }
