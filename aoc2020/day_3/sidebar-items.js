@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["EMPTY",""],["TREE",""]],"enum":[["DayError",""]],"fn":[["input",""],["run",""],["task_1",""]],"struct":[["TreeMaze",""]]});
+initSidebarItems({"constant":[["EMPTY",""],["TREE",""]],"enum":[["DayError",""]],"fn":[["check_slope",""],["input",""],["run",""],["task_1",""],["task_2",""]],"struct":[["Slope",""],["TreeMaze",""]]});
