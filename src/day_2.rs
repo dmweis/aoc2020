@@ -84,7 +84,7 @@ impl PasswordAndPolicy {
             .nth(second_index as usize)
             .filter(|letter| letter == &self.letter)
             .is_some();
-        first_correct && !second_correct || !first_correct && second_correct
+        first_correct ^ second_correct
     }
 }
 
