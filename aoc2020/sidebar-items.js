@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main",""]],"mod":[["day_1",""],["day_2",""]],"struct":[["Args",""]]});
+initSidebarItems({"fn":[["main",""]],"mod":[["day_1",""],["day_2",""],["day_3",""]],"struct":[["Args",""]]});
