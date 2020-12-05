@@ -28,9 +28,50 @@ impl<'a> From<&'a str> for Passport<'a> {
     }
 }
 
+enum Height {
+    CM(i32),
+    IN(i32),
+}
 impl<'a> Passport<'a> {
     fn is_valid_credential(&self) -> bool {
         NEEDED_KEYS.iter().all(|key| self.fields.contains_key(*key))
+    }
+
+    fn is_valid_strict(&self) -> bool {
+        self.fields
+            .get("byr")
+            .and_then(|val| val.parse::<i32>().ok())
+            .filter(|num| num >= &1920 && num <= &2002)
+            .is_some()
+            && self
+                .fields
+                .get("iyr")
+                .and_then(|val| val.parse::<i32>().ok())
+                .filter(|num| num >= &2010 && num <= &2020)
+                .is_some()
+            && self
+                .fields
+                .get("eyr")
+                .and_then(|val| val.parse::<i32>().ok())
+                .filter(|num| num >= &2020 && num <= &2030)
+                .is_some()
+            && self
+                .fields
+                .get("hgt")
+                .and_then(|val| {
+                    if let Some(height) = val.strip_suffix("cm") {
+                        height.parse::<i32>().ok().map(Height::CM)
+                    } else if let Some(height) = val.strip_suffix("cm") {
+                        height.parse::<i32>().ok().map(Height::IN)
+                    } else {
+                        None
+                    }
+                })
+                .filter(|height| match height {
+                    Height::CM(height_cm) => height_cm >= &150 && height_cm <= &193,
+                    Height::IN(height_in) => height_in >= &59 && height_in <= &76,
+                })
+                .is_some()
     }
 }
 
