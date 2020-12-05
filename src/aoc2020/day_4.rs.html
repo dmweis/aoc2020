@@ -118,7 +118,6 @@
 <span id="115">115</span>
 <span id="116">116</span>
 <span id="117">117</span>
-<span id="118">118</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">include_str</span>;
@@ -163,7 +162,7 @@
         .<span class="ident">collect</span>()
 }
 
-<span class="kw">fn</span> <span class="ident">task_1</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">task_1</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;_</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
     <span class="kw">let</span> <span class="ident">passports</span> <span class="op">=</span> <span class="ident">parse_file</span>(<span class="ident">input</span>);
     <span class="ident">passports</span>
         .<span class="ident">iter</span>()
@@ -173,7 +172,6 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>() {
     <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Day 4 task 1: {}&quot;</span>, <span class="ident">task_1</span>(<span class="ident">input</span>()));
-    <span class="comment">// println!(&quot;Day 4 task 2: {}&quot;, task_2(input()).unwrap());</span>
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
