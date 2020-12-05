@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use anyhow::Result;
 use thiserror::Error;
 
@@ -70,8 +72,26 @@ fn task_1(input: &str) -> Result<usize> {
         .ok_or(DayError::FailedToFindSeat)?)
 }
 
+fn task_2(input: &str) -> Result<usize> {
+    let seat_ids: HashSet<usize> = input
+        .lines()
+        .map(|line| SeatLocation::parse(line))
+        .filter_map(Result::ok)
+        .map(|seat_location| seat_location.id)
+        .collect();
+    let min = *seat_ids.iter().min().ok_or(DayError::FailedToFindSeat)?;
+    let max = *seat_ids.iter().max().ok_or(DayError::FailedToFindSeat)?;
+    for id in min..max {
+        if !seat_ids.contains(&id) {
+            return Ok(id);
+        }
+    }
+    Err(DayError::FailedToFindSeat.into())
+}
+
 pub fn run() {
     println!("Day 5 task 1: {}", task_1(input()).unwrap());
+    println!("Day 5 task 2: {}", task_2(input()).unwrap());
 }
 
 #[cfg(test)]
@@ -152,5 +172,11 @@ mod tests {
     fn task_1_test() {
         let highest_id = task_1(input()).unwrap();
         assert_eq!(highest_id, 888);
+    }
+
+    #[test]
+    fn task_2_test() {
+        let highest_id = task_2(input()).unwrap();
+        assert_eq!(highest_id, 522);
     }
 }
