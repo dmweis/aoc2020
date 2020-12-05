@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["NEEDED_KEYS",""]],"fn":[["input",""],["parse_file",""],["run",""],["task_1",""]],"struct":[["Passport",""]]});
+initSidebarItems({"constant":[["NEEDED_KEYS",""]],"enum":[["Height",""]],"fn":[["input",""],["parse_file",""],["run",""],["task_1",""]],"struct":[["Passport",""]]});
