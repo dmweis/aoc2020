@@ -41,7 +41,7 @@ fn parse_file<'a>(input: &'a str) -> Vec<Passport<'a>> {
         .collect()
 }
 
-fn task_1<'a>(input: &'a str) -> usize {
+fn task_1(input: &'_ str) -> usize {
     let passports = parse_file(input);
     passports
         .iter()
@@ -51,7 +51,6 @@ fn task_1<'a>(input: &'a str) -> usize {
 
 pub fn run() {
     println!("Day 4 task 1: {}", task_1(input()));
-    // println!("Day 4 task 2: {}", task_2(input()).unwrap());
 }
 
 #[cfg(test)]
