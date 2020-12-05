@@ -1,3 +1,4 @@
+use lazy_static::*;
 use regex::Regex;
 use std::collections::HashMap;
 use std::include_str;
@@ -35,18 +36,24 @@ enum Height {
 }
 
 fn validate_color(text: &str) -> bool {
-    let re = Regex::new(r"#[a-f0-9]{6}").unwrap();
-    re.is_match(text)
+    lazy_static! {
+        static ref COLOR_RE: Regex = Regex::new(r"#[a-f0-9]{6}").unwrap();
+    }
+    COLOR_RE.is_match(text)
 }
 
 fn validate_eye(text: &str) -> bool {
-    let re = Regex::new(r"amb|blu|brn|gry|grn|hzl|oth").unwrap();
-    re.is_match(text)
+    lazy_static! {
+        static ref EYE_RE: Regex = Regex::new(r"amb|blu|brn|gry|grn|hzl|oth").unwrap();
+    }
+    EYE_RE.is_match(text)
 }
 
 fn validate_passport_number(text: &str) -> bool {
-    let re = Regex::new(r"^\d{9}$").unwrap();
-    re.is_match(text)
+    lazy_static! {
+        static ref PASSPORT_RE: Regex = Regex::new(r"^\d{9}$").unwrap();
+    }
+    PASSPORT_RE.is_match(text)
 }
 
 impl<'a> Passport<'a> {

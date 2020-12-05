@@ -22,6 +22,7 @@ dependencies = [
  "anyhow",
  "chrono",
  "clap",
+ "lazy_static",
  "regex",
  "thiserror",
 ]
