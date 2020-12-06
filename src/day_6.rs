@@ -18,6 +18,7 @@ fn task_1(input: &str) -> usize {
 }
 
 fn task_2(input: &str) -> usize {
+    let alphabet_set = ('a'..='z').collect::<HashSet<char>>();
     input
         .split("\n\n")
         .map(|group| {
@@ -30,7 +31,7 @@ fn task_2(input: &str) -> usize {
                 })
                 .fold(
                     // TODO: replace with https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.fold_first once it becomes stable
-                    ('a'..='z').collect::<HashSet<char>>(),
+                    alphabet_set.clone(),
                     |acc, person| acc.intersection(&person).cloned().collect(),
                 )
         })
