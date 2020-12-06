@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["input",""],["run",""],["task_1",""]]});
+initSidebarItems({"fn":[["input",""],["run",""],["task_1",""],["task_2",""]]});
