@@ -3,6 +3,7 @@ mod day_2;
 mod day_3;
 mod day_4;
 mod day_5;
+mod day_6;
 
 use chrono::prelude::*;
 use clap::Clap;
@@ -32,6 +33,7 @@ fn main() {
         3 => day_3::run(),
         4 => day_4::run(),
         5 => day_5::run(),
+        6 => day_6::run(),
         _ => println!("No solution for that day yet!"),
     }
 }
