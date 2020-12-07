@@ -1,6 +1,13 @@
 use anyhow::Result;
+use lazy_static::lazy_static;
+use regex::Regex;
 use std::collections::{HashMap, HashSet, VecDeque};
 use thiserror::Error;
+
+lazy_static! {
+    static ref RULE_REGEX: Regex =
+        Regex::new(r"\s*(?P<number>\d*)\s(?P<color_name>[[:alpha:]\s]*)( bag| bags)").unwrap();
+}
 
 fn input() -> &'static str {
     include_str!("inputs/day_7.txt")
@@ -15,9 +22,15 @@ pub enum DayError {
 const MY_BAG: &str = "shiny gold";
 
 #[derive(Debug, Eq, PartialEq)]
+struct ContainedBag {
+    color: String,
+    count: usize,
+}
+
+#[derive(Debug, Eq, PartialEq)]
 struct BagRule {
     parent: String,
-    children: Vec<String>,
+    children: Vec<ContainedBag>,
 }
 
 impl BagRule {
@@ -27,27 +40,32 @@ impl BagRule {
 
         let child_list = split_halves.next().ok_or(DayError::FailedParsingRule)?;
         let child_text_fields = if child_list.contains("no other bags.") {
-            vec![]
+            Ok(vec![])
         } else {
             child_list
                 .split(|character| char::is_ascii_punctuation(&character))
+                .filter(|line| !line.is_empty())
                 .map(|contents| {
-                    contents
-                        .replace("bags", "")
-                        .replace("bag", "")
-                        .trim()
-                        .chars()
-                        .skip_while(|character| !character.is_whitespace())
-                        .collect::<String>()
-                        .trim()
-                        .to_owned()
+                    let captures = RULE_REGEX
+                        .captures(contents)
+                        .ok_or(DayError::FailedParsingRule)?;
+                    let color = captures
+                        .name("color_name")
+                        .ok_or(DayError::FailedParsingRule)?
+                        .as_str()
+                        .to_owned();
+                    let count = captures
+                        .name("number")
+                        .ok_or(DayError::FailedParsingRule)?
+                        .as_str()
+                        .parse()?;
+                    Ok(ContainedBag { color, count })
                 })
-                .filter(|text| !text.is_empty())
-                .collect::<Vec<_>>()
+                .collect::<Result<Vec<_>>>()
         };
         Ok(BagRule {
             parent: parent_name.to_owned(),
-            children: child_text_fields,
+            children: child_text_fields?,
         })
     }
 }
@@ -63,7 +81,7 @@ impl RuleSet {
         let mut bag_to_containers = HashMap::new();
         for rule in rules {
             for child in rule.children {
-                let containers = bag_to_containers.entry(child).or_insert(vec![]);
+                let containers = bag_to_containers.entry(child.color).or_insert(vec![]);
                 containers.push(rule.parent.clone());
             }
         }
@@ -150,7 +168,16 @@ dark orange bags contain 3 bright white bags, 4 muted yellow bags.";
         let res = BagRule::parse(&example).unwrap();
         let expected = BagRule {
             parent: "light red".to_owned(),
-            children: vec!["bright white".to_owned(), "muted yellow".to_owned()],
+            children: vec![
+                ContainedBag {
+                    color: "bright white".to_owned(),
+                    count: 1,
+                },
+                ContainedBag {
+                    color: "muted yellow".to_owned(),
+                    count: 2,
+                },
+            ],
         };
         assert_eq!(expected, res);
     }
@@ -171,5 +198,27 @@ dark orange bags contain 3 bright white bags, 4 muted yellow bags.";
         let res = task_1(input()).unwrap();
         assert!(res < 204);
         assert_eq!(res, 197);
+    }
+
+    #[test]
+    fn rule_capture() {
+        let rule = "1 bright white bag";
+        let captures = RULE_REGEX.captures(rule).unwrap();
+        assert_eq!(captures.name("number").unwrap().as_str(), "1");
+        assert_eq!(
+            captures.name("color_name").unwrap().as_str(),
+            "bright white"
+        );
+    }
+
+    #[test]
+    fn rule_capture_white_space() {
+        let rule = " 1 bright white bag";
+        let captures = RULE_REGEX.captures(rule).unwrap();
+        assert_eq!(captures.name("number").unwrap().as_str(), "1");
+        assert_eq!(
+            captures.name("color_name").unwrap().as_str(),
+            "bright white"
+        );
     }
 }
