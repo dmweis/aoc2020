@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["aoc2020"] = [{"text":"impl StructuralEq for SeatLocation","synthetic":false,"types":[]},{"text":"impl StructuralEq for BagRule","synthetic":false,"types":[]},{"text":"impl StructuralEq for RuleSet","synthetic":false,"types":[]}];
+implementors["aoc2020"] = [{"text":"impl StructuralEq for SeatLocation","synthetic":false,"types":[]},{"text":"impl StructuralEq for ContainedBag","synthetic":false,"types":[]},{"text":"impl StructuralEq for BagRule","synthetic":false,"types":[]},{"text":"impl StructuralEq for RuleSet","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
