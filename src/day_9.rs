@@ -46,7 +46,7 @@ impl FirstInEvictionSet {
     }
 }
 
-fn task_1(input: &Vec<i64>) -> Option<i64> {
+fn task_1(input: &[i64]) -> Option<i64> {
     let mut counter = FirstInEvictionSet::new(25);
     // preamble
     for number in input.iter().take(25) {
@@ -61,25 +61,7 @@ fn task_1(input: &Vec<i64>) -> Option<i64> {
     None
 }
 
-fn task_2(numbers: &Vec<i64>, target: i64) -> Option<i64> {
-    for (index, number) in numbers.iter().enumerate() {
-        let mut collect = vec![number];
-        for other in numbers.get(index + 1..)? {
-            collect.push(other);
-            let sum: i64 = collect.iter().cloned().sum();
-            match sum {
-                sum if sum == target => {
-                    return Some(*collect.iter().max()? + *collect.iter().min()?)
-                }
-                sum if sum > target => break,
-                _ => (),
-            }
-        }
-    }
-    None
-}
-
-fn task_2_speedier(numbers: &Vec<i64>, target: i64) -> Option<i64> {
+fn task_2(numbers: &[i64], target: i64) -> Option<i64> {
     for (index, number) in numbers.iter().enumerate() {
         let mut rolling_sum = *number;
         let mut min = number;
@@ -102,10 +84,7 @@ pub fn run() {
     let data = input();
     let task_1_res = task_1(&data).unwrap();
     println!("Day 9 task 1 -> {}", task_1_res);
-    println!(
-        "Day 9 task 2 -> {}",
-        task_2_speedier(&data, task_1_res).unwrap()
-    );
+    println!("Day 9 task 2 -> {}", task_2(&data, task_1_res).unwrap());
 }
 
 #[cfg(test)]
