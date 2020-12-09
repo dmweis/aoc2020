@@ -16,10 +16,23 @@ use clap::Clap;
 struct Args {
     #[clap(short, long)]
     day: Option<u32>,
+    #[clap(short, long)]
+    all: bool,
 }
 
 fn main() {
     let args: Args = Args::parse();
+    if args.all {
+        day_1::run();
+        day_2::run();
+        day_3::run();
+        day_4::run();
+        day_5::run();
+        day_6::run();
+        day_7::run();
+        day_8::run();
+        day_9::run();
+    }
     let day = if let Some(day) = args.day {
         day
     } else {
