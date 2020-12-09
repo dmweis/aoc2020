@@ -90,8 +90,8 @@ fn task_2(input: &str) -> Result<usize> {
 }
 
 pub fn run() {
-    println!("Day 5 task 1: {}", task_1(input()).unwrap());
-    println!("Day 5 task 2: {}", task_2(input()).unwrap());
+    println!("Day 5 task 1 -> {}", task_1(input()).unwrap());
+    println!("Day 5 task 2 -> {}", task_2(input()).unwrap());
 }
 
 #[cfg(test)]

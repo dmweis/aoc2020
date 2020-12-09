@@ -141,8 +141,8 @@ fn task_2(input: &'_ str) -> usize {
 }
 
 pub fn run() {
-    println!("Day 4 task 1: {}", task_1(input()));
-    println!("Day 4 task 2: {}", task_2(input()));
+    println!("Day 4 task 1 -> {}", task_1(input()));
+    println!("Day 4 task 2 -> {}", task_2(input()));
 }
 
 #[cfg(test)]
