@@ -24,14 +24,23 @@ fn main() {
     let args: Args = Args::parse();
     if args.all {
         day_1::run();
+        println!();
         day_2::run();
+        println!();
         day_3::run();
+        println!();
         day_4::run();
+        println!();
         day_5::run();
+        println!();
         day_6::run();
+        println!();
         day_7::run();
+        println!();
         day_8::run();
+        println!();
         day_9::run();
+        return;
     }
     let day = if let Some(day) = args.day {
         day
