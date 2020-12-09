@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Command",""],["DayError",""]],"fn":[["input",""],["run",""],["task_1",""]],"struct":[["Computer",""]]});
+initSidebarItems({"enum":[["Command",""],["DayError",""]],"fn":[["input",""],["run",""],["task_1",""],["task_2",""]],"struct":[["Computer",""],["ComputerMutator",""]]});
