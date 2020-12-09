@@ -61,8 +61,26 @@ fn task_1(input: Vec<i64>) -> Option<i64> {
     None
 }
 
+fn task_2(numbers: Vec<i64>, target: i64) -> Option<i64> {
+    for (index, number) in numbers.iter().enumerate() {
+        let mut collect = vec![number];
+        for other in numbers.get(index + 1..)? {
+            collect.push(other);
+            let sum: i64 = collect.iter().cloned().sum();
+            if sum == target {
+                return Some(*collect.iter().max()? + *collect.iter().min()?);
+            } else if sum > target {
+                break;
+            }
+        }
+    }
+    None
+}
+
 pub fn run() {
-    println!("Day 9 task 1 -> {}", task_1(input()).unwrap());
+    let task_1_res = task_1(input()).unwrap();
+    println!("Day 9 task 1 -> {}", task_1_res);
+    println!("Day 9 task 2 -> {}", task_2(input(), task_1_res).unwrap());
 }
 
 #[cfg(test)]
@@ -118,5 +136,21 @@ mod tests {
     fn task_1_test() {
         let res = task_1(input()).unwrap();
         assert_eq!(res, 257342611);
+    }
+
+    #[test]
+    fn task_2_test() {
+        let res = task_2(input(), 257342611).unwrap();
+        assert_eq!(res, 35602097);
+    }
+
+    #[test]
+    fn task_2_example_1() {
+        let example = vec![
+            35, 20, 15, 25, 47, 40, 62, 55, 65, 95, 102, 117, 150, 182, 127, 219, 299, 277, 309,
+            576,
+        ];
+        let res = task_2(example, 127).unwrap();
+        assert_eq!(res, 62);
     }
 }
