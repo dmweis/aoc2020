@@ -46,22 +46,22 @@ impl FirstInEvictionSet {
     }
 }
 
-fn task_1(input: Vec<i64>) -> Option<i64> {
+fn task_1(input: &Vec<i64>) -> Option<i64> {
     let mut counter = FirstInEvictionSet::new(25);
     // preamble
     for number in input.iter().take(25) {
         counter.insert(*number);
     }
-    for number in input.into_iter().skip(25) {
-        if !counter.contains_valid_parts(number) {
-            return Some(number);
+    for number in input.iter().skip(25) {
+        if !counter.contains_valid_parts(*number) {
+            return Some(*number);
         }
-        counter.insert(number)
+        counter.insert(*number)
     }
     None
 }
 
-fn task_2(numbers: Vec<i64>, target: i64) -> Option<i64> {
+fn task_2(numbers: &Vec<i64>, target: i64) -> Option<i64> {
     for (index, number) in numbers.iter().enumerate() {
         let mut collect = vec![number];
         for other in numbers.get(index + 1..)? {
@@ -79,10 +79,33 @@ fn task_2(numbers: Vec<i64>, target: i64) -> Option<i64> {
     None
 }
 
+fn task_2_speedier(numbers: &Vec<i64>, target: i64) -> Option<i64> {
+    for (index, number) in numbers.iter().enumerate() {
+        let mut rolling_sum = *number;
+        let mut min = number;
+        let mut max = number;
+        for other in numbers.get(index + 1..)? {
+            min = min.min(other);
+            max = max.max(other);
+            rolling_sum += other;
+            match rolling_sum {
+                sum if sum == target => return Some(max + min),
+                sum if sum > target => break,
+                _ => (),
+            }
+        }
+    }
+    None
+}
+
 pub fn run() {
-    let task_1_res = task_1(input()).unwrap();
+    let data = input();
+    let task_1_res = task_1(&data).unwrap();
     println!("Day 9 task 1 -> {}", task_1_res);
-    println!("Day 9 task 2 -> {}", task_2(input(), task_1_res).unwrap());
+    println!(
+        "Day 9 task 2 -> {}",
+        task_2_speedier(&data, task_1_res).unwrap()
+    );
 }
 
 #[cfg(test)]
@@ -136,13 +159,13 @@ mod tests {
 
     #[test]
     fn task_1_test() {
-        let res = task_1(input()).unwrap();
+        let res = task_1(&input()).unwrap();
         assert_eq!(res, 257342611);
     }
 
     #[test]
     fn task_2_test() {
-        let res = task_2(input(), 257342611).unwrap();
+        let res = task_2(&input(), 257342611).unwrap();
         assert_eq!(res, 35602097);
     }
 
@@ -152,7 +175,7 @@ mod tests {
             35, 20, 15, 25, 47, 40, 62, 55, 65, 95, 102, 117, 150, 182, 127, 219, 299, 277, 309,
             576,
         ];
-        let res = task_2(example, 127).unwrap();
+        let res = task_2(&example, 127).unwrap();
         assert_eq!(res, 62);
     }
 }
