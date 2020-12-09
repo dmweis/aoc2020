@@ -67,10 +67,12 @@ fn task_2(numbers: Vec<i64>, target: i64) -> Option<i64> {
         for other in numbers.get(index + 1..)? {
             collect.push(other);
             let sum: i64 = collect.iter().cloned().sum();
-            if sum == target {
-                return Some(*collect.iter().max()? + *collect.iter().min()?);
-            } else if sum > target {
-                break;
+            match sum {
+                sum if sum == target => {
+                    return Some(*collect.iter().max()? + *collect.iter().min()?)
+                }
+                sum if sum > target => break,
+                _ => (),
             }
         }
     }
