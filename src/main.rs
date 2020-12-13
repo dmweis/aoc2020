@@ -1,4 +1,5 @@
 mod day_1;
+mod day_10;
 mod day_2;
 mod day_3;
 mod day_4;
@@ -40,6 +41,8 @@ fn main() {
         day_8::run();
         println!();
         day_9::run();
+        println!();
+        day_10::run();
         return;
     }
     let day = if let Some(day) = args.day {
@@ -62,6 +65,7 @@ fn main() {
         7 => day_7::run(),
         8 => day_8::run(),
         9 => day_9::run(),
+        10 => day_10::run(),
         _ => println!("No solution for that day yet!"),
     }
 }
